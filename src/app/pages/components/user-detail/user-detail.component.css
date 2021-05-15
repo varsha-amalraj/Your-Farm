@@ -1,0 +1,11 @@
+.card {
+  margin-top: 50px;
+  border: none;
+}
+.next {
+  margin-right: 20px;
+}
+.table {
+  margin-left: 150px;
+  max-width: 70%;
+}

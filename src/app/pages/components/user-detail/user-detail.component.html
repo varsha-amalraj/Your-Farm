@@ -1,0 +1,40 @@
+<div class="card text-center">
+  <div class="card-header">
+    <h4>Get User Details</h4>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="userDetailForm">
+      <div class="form-group row w-50">
+        <label class="col-3 col-form-label">Select Date Range:</label>
+        <div class="col-5">
+          <input type="text" ngxDaterangepickerMd class="form-control" formControlName="dateRange" />
+          <p class="text-left text-danger" *ngIf="userDetailFormControl.dateRange.touched || userDetailFormControl.dateRange.dirty">Date range is required.</p>
+        </div>
+        <div class="col-4">
+          <button type="button" [disabled]="userDetailForm.invalid" (click)="onSubmit()" class="btn btn-primary btn-lg">Get Details</button>
+        </div>
+      </div>
+    </form>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">Mobile Number</th>
+          <th scope="col">Pincode</th>
+          <th scope="col">Joined On</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of userData">
+          <th scope="row">{{ item.id }}</th>
+          <td>{{ item.mobile_no }}</td>
+          <td>{{ item.pincode }}</td>
+          <td>{{ item.created_at | date: 'dd-MM-yyyy'}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="float-right next">
+      <a routerLink="../send-message">Next</a>
+    </div>
+  </div>
+</div>
