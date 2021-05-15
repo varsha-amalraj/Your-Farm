@@ -7,6 +7,7 @@ import { LoginComponent } from './pages/components/login/login.component';
 import { HttpClientModule } from '@angular/common/http';
 import {ToastrModule} from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+    NgxPaginationModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
