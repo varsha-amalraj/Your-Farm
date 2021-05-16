@@ -6,10 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./send-message.component.css']
 })
 export class SendMessageComponent implements OnInit {
-
   constructor() { }
 
   ngOnInit(): void {
   }
-
 }
