@@ -13,15 +13,14 @@ import { TOASTR_DURATION } from '../../constants';
 })
 export class UserDetailComponent implements OnInit {
   userData: any;
-  items = [];
-  pageOfItems: Array<any>;
+  page = 1;
+  totalRec;
+  config;
   constructor(private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private service: CommonService) { }
 
-  ngOnInit(): void {
-    this.items = Array(150).fill(0).map((x, i) => ({ id: (i + 1), name: `Item ${i + 1}`}));
-  }
+  ngOnInit(): void {  }
 
   userDetailForm = this.formBuilder.group({
     dateRange: [null,[Validators.required]],
@@ -29,10 +28,9 @@ export class UserDetailComponent implements OnInit {
   get userDetailFormControl() {
     return this.userDetailForm.controls;
   }
-  onChangePage(pageOfItems: Array<any>) {
-    // update current page of items
-    this.pageOfItems = pageOfItems;
-}
+  onPageChange(event) {
+
+  }
   onSubmit() {
     const params = {
       created_from: moment((this.userDetailForm.get('dateRange').value).startDate).format('YYYY-MM-DD'),
@@ -43,6 +41,12 @@ export class UserDetailComponent implements OnInit {
         console.log(response);
 
         this.userData = response.body.users;
+        this.totalRec = this.userData.length;
+        this.config = {
+          itemsPerPage: 5,
+          currentPage: 1,
+          totalItems: this.totalRec
+        };
       },
       (error: HttpErrorResponse) => {
         this.toastr.error(error[0], 'Error', {
@@ -51,5 +55,8 @@ export class UserDetailComponent implements OnInit {
       },
     );
     // this.subscriptions.add(observer);
+  }
+  pageChanged(event){
+    this.page = event;
   }
 }

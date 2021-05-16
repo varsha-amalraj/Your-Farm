@@ -25,6 +25,7 @@
     "moment": "^2.29.1",
     "ngrx-store-localstorage": "^11.0.0",
     "ngx-daterangepicker-material": "^4.0.1",
+    "ngx-pagination": "^5.1.0",
     "ngx-toastr": "^13.2.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",

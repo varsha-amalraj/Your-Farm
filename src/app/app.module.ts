@@ -12,8 +12,7 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { SendMessageComponent } from './pages/components/send-message/send-message.component';
 import { StoreModule } from '@ngrx/store';
 import * as store from './store/store';
-
-
+import {NgxPaginationModule} from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -32,6 +31,7 @@ import * as store from './store/store';
     ToastrModule.forRoot(),
     NgxDaterangepickerMd.forRoot(),
     StoreModule.forRoot(store.reducers, { metaReducers: store.metaReducers }),
+    NgxPaginationModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
