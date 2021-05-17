@@ -14,8 +14,10 @@ export class CommonService implements OnDestroy {
   subscriptions = new Subscription();
   private url = 'https://yourfarm-api.herokuapp.com/';
   options: any;
+  itemRef: any;
   constructor(private http: HttpClient, private store: Store<StoreState>,
     public db: AngularFireDatabase) {
+    this.itemRef = this.db.list('message_detail');
     const observer = this.store.pipe(select('authData')).subscribe((user) => {
       const headers: HttpHeaders = new HttpHeaders({
         Authorization: TOKEN
@@ -46,8 +48,10 @@ export class CommonService implements OnDestroy {
     return this.http.get(`${this.url}v1/users`, params);
   }
   addMessage(messageData){
-    const itemRef = this.db.list('message_detail');
-    return itemRef.push(messageData);
+    return this.itemRef.push(messageData);
+  }
+  getMessageList() {
+    return this.itemRef;
   }
   errorHandler(resposeError: HttpErrorResponse) {
     return throwError(resposeError.error.errors);

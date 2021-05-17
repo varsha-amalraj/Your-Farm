@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { FormBuilder, Validators } from '@angular/forms';
-import { finalize } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
 import { CommonService } from '../../CommonService';
 
 @Component({
@@ -15,6 +15,10 @@ export class SendMessageComponent implements OnInit {
   getImageUrl: string;
   selectedImage: any = null;
   messageDisabled: boolean = false;
+  messageDetails = [];
+  isTableShow: boolean = false;
+  messageText: string;
+  codeText: string;
   constructor(private formBuilder: FormBuilder,
     private storage: AngularFireStorage,
     private service: CommonService) { }
@@ -72,15 +76,26 @@ export class SendMessageComponent implements OnInit {
     this.isSubmitted = false;
   }
   sendMessage() {
-    const messageText = `Your ${this.frameMessageForm.get('frameMessage').value} code is:${this.frameMessageForm.get('frameCode').value}`;
+    const messageText = `Your ${this.frameMessageForm.get('frameMessage').value}; code is:${this.frameMessageForm.get('frameCode').value}`;
     const params = {
       message: messageText,
       image: this.getImageUrl
     }
-    this.saveMessage(params);
-  }
-  saveMessage(params:any) {
     this.service.addMessage(params);
+  }
+  getMessageDetails() {
+    this.isTableShow = true;
+    this.service.getMessageList().snapshotChanges().forEach(element => {
+      element.forEach(element => {
+        let message_det = element.payload.toJSON();
+        this.messageDetails.push(message_det);
+      });
+    });
+  }
+  useDetails(val) {
+    const messageContent = this.messageDetails[val].message;
+    this.frameMessageForm.controls.frameMessage.setValue(messageContent.split('Your ').pop().split(';')[0])
+    this.frameMessageForm.controls.frameCode.setValue(messageContent.split('code is:')[1])
   }
 }
 
