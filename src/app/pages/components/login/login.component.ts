@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { AuthUserData, LoginFormData } from '../../model';
 import { HttpErrorResponse } from '@angular/common/http';
 import {ToastrService} from 'ngx-toastr';
-import { TOASTR_DURATION } from '../../constants';
+import { TOASTR_DURATION, TOKEN } from '../../constants';
 import { CommonService } from '../../CommonService';
 import { Router } from '@angular/router';
 import * as authAction from '../../store/actions/authAction';
@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
     const observer = this.service.login(LoginData).subscribe(
       (response: any) => {
         const loggedinUserData: AuthUserData = {
-          token: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGVObyI6IjkwMDAwMDAwMDEiLCJpYXQiOjE2MjEwNjczNTZ9.wD_ltBfn90RT74xjOYSFybN5nQ2w8farBbyr8NeZzuc',
+          token: TOKEN,
           id: response.body.id,
           mobile_no: response.body.mobile_no,
           role: response.body.role,

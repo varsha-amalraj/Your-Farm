@@ -4,6 +4,8 @@ import { select, Store } from '@ngrx/store';
 import { Subscription, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators'
 import { StoreState } from '../store/store';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { TOKEN } from './constants';
 
 @Injectable({
   providedIn: 'root',
@@ -12,17 +14,18 @@ export class CommonService implements OnDestroy {
   subscriptions = new Subscription();
   private url = 'https://yourfarm-api.herokuapp.com/';
   options: any;
-  constructor(private http: HttpClient, private store: Store<StoreState>) {
+  constructor(private http: HttpClient, private store: Store<StoreState>,
+    public db: AngularFireDatabase) {
     const observer = this.store.pipe(select('authData')).subscribe((user) => {
       const headers: HttpHeaders = new HttpHeaders({
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGVObyI6IjkwMDAwMDAwMDEiLCJpYXQiOjE2MjEwNjczNTZ9.wD_ltBfn90RT74xjOYSFybN5nQ2w8farBbyr8NeZzuc'
+        Authorization: TOKEN
       });
       this.options = {
         headers: headers,
         observe: 'response' as 'body',
       };
     });
-    // this.subscriptions.add(observer);
+    this.subscriptions.add(observer);
   }
 
   ngOnDestroy() {
@@ -41,6 +44,10 @@ export class CommonService implements OnDestroy {
       ...this.options
     }
     return this.http.get(`${this.url}v1/users`, params);
+  }
+  addMessage(messageData){
+    const itemRef = this.db.list('message_detail');
+    return itemRef.push(messageData);
   }
   errorHandler(resposeError: HttpErrorResponse) {
     return throwError(resposeError.error.errors);
