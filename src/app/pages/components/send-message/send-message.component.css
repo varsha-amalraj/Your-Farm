@@ -1,0 +1,10 @@
+.card {
+  margin-top: 50px;
+  border: none;
+}
+img {
+  cursor: pointer;
+}
+.row {
+  margin-top: 20px;
+}

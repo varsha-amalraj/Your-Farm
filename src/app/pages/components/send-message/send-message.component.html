@@ -1,1 +1,41 @@
-<p>Welcome page</p>
+<div class="card text-center">
+  <div class="card-header">
+    <h4>Send Message To User</h4>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-6">
+        <form [formGroup]="frameMessageForm">
+          <div class="row">
+            <label class="col-4 col-form-label">Frame Message</label>
+            <div class="form-group col-8">
+              <input type="text" class="form-control" placeholder="Enter Message" formControlName="frameMessage"><br>
+              <input type="text" class="form-control" placeholder="Enter Code" formControlName = "frameCode">
+             </div>
+
+          </div>
+          <div class="form-group" *ngIf="messageDisabled">
+            <button type="button" class="btn btn-success" [disabled]="frameMessageForm.invalid" (click)="sendMessage()">Submit</button>
+          </div>
+        </form>
+      </div>
+      <div class="col-6">
+        <h6 class="text-center">Upload Image</h6>
+        <form [formGroup]="uploadImageForm">
+          <div class="text-center">
+            <img [src]="imgSrc" width= "250px" height="150px" (click)="fileUplaoder.click()">
+          </div>
+          <div class="row">
+            <label class="col-3 col-form-label">Select file to upload</label>
+            <div class="form-group col-6">
+              <input type="file" class="form-control" (change)="showPreview($event)" formControlName="imageUrl" #fileUplaoder>
+             </div>
+             <div class="form-group col-3">
+               <button type="button" class="btn btn-success float-right" (click)="onSubmit()">Upload</button>
+             </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
