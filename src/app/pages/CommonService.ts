@@ -6,6 +6,7 @@ import { catchError } from 'rxjs/operators'
 import { StoreState } from '../store/store';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { TOKEN } from './constants';
+import emailjs, { EmailJSResponseStatus } from 'emailjs-com';
 
 @Injectable({
   providedIn: 'root',
@@ -52,6 +53,20 @@ export class CommonService implements OnDestroy {
   }
   getMessageList() {
     return this.itemRef;
+  }
+  sendEmailToClient() {
+    const params = {
+      name: 'varsha',
+      email: 'minivarsha.a@netcon.in',
+      subject: 'sub test',
+      message: 'test',
+    }
+    return emailjs.send('service_kutecu8', 'template_31nht7e', params, 'user_UCPJOmALiHMsIcUmlhP3n')
+    .then(function(response) {
+       console.log('SUCCESS!', response.status, response.text);
+    }, function(error) {
+       console.log('FAILED...', error);
+    });
   }
   errorHandler(resposeError: HttpErrorResponse) {
     return throwError(resposeError.error.errors);
