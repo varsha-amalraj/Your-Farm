@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { finalize, map } from 'rxjs/operators';
 import { CommonService } from '../../CommonService';
+import { SendMessageResolverService } from './send-message-resolver.service';
 
 @Component({
   selector: 'app-send-message',
@@ -21,28 +23,30 @@ export class SendMessageComponent implements OnInit {
   codeText: string;
   constructor(private formBuilder: FormBuilder,
     private storage: AngularFireStorage,
-    private service: CommonService) { }
+    private service: CommonService,
+    private activatedRoute: ActivatedRoute,
+    private resolverService:SendMessageResolverService) { }
 
   ngOnInit(): void {
     this.frameMessageForm.disable();
   }
   frameMessageForm = this.formBuilder.group({
-    frameMessage: [null,[Validators.required]],
+    frameMessage: [null, [Validators.required]],
     frameCode: [null, [Validators.required]]
   });
   get frameMessageControl() {
     return this.frameMessageForm.controls;
   }
   uploadImageForm = this.formBuilder.group({
-    imageUrl: [null,[Validators.required]],
+    imageUrl: [null, [Validators.required]],
   });
   get uploadImageControl() {
     return this.uploadImageForm.controls;
   }
-  showPreview(event:any) {
-    if(event.target.files && event.target.files[0]) {
+  showPreview(event: any) {
+    if (event.target.files && event.target.files[0]) {
       const reader = new FileReader();
-      reader.onload = (e:any) =>this.imgSrc = e.target.result;
+      reader.onload = (e: any) => this.imgSrc = e.target.result;
       reader.readAsDataURL(event.target.files[0]);
       this.selectedImage = event.target.files[0];
     }
@@ -57,7 +61,7 @@ export class SendMessageComponent implements OnInit {
     const fileRef = this.storage.ref(filePath);
     this.storage.upload(filePath, this.selectedImage).snapshotChanges().pipe(
       finalize(() => {
-        fileRef.getDownloadURL().subscribe((url)=>{
+        fileRef.getDownloadURL().subscribe((url) => {
           this.getImageUrl = url;
           this.resetForm();
           this.frameMessageForm.enable();
@@ -82,7 +86,9 @@ export class SendMessageComponent implements OnInit {
       image: this.getImageUrl
     }
     this.service.addMessage(params);
+    this.resolverService.resolve();
   }
+
   getMessageDetails() {
     this.isTableShow = true;
     this.service.getMessageList().snapshotChanges().forEach(element => {
