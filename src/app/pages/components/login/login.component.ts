@@ -58,6 +58,5 @@ export class LoginComponent implements OnInit {
         });
       },
     );
-    // this.subscriptions.add(observer);
   }
 }

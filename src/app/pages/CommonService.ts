@@ -7,6 +7,7 @@ import { StoreState } from '../store/store';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { TOKEN } from './constants';
 import emailjs, { EmailJSResponseStatus } from 'emailjs-com';
+import axios from 'axios';
 
 @Injectable({
   providedIn: 'root',
@@ -39,7 +40,7 @@ export class CommonService implements OnDestroy {
       observe: 'response',
     };
     return this.http.post(`${this.url}v1/login`, formData, this.options)
-    .pipe(catchError(this.errorHandler));
+      .pipe(catchError(this.errorHandler));
   }
   getUserDetails(formData) {
     const params = {
@@ -48,7 +49,7 @@ export class CommonService implements OnDestroy {
     }
     return this.http.get(`${this.url}v1/users`, params);
   }
-  addMessage(messageData){
+  addMessage(messageData) {
     return this.itemRef.push(messageData);
   }
   getMessageList() {
@@ -62,11 +63,34 @@ export class CommonService implements OnDestroy {
       message: 'test',
     }
     return emailjs.send('service_kutecu8', 'template_31nht7e', params, 'user_UCPJOmALiHMsIcUmlhP3n')
-    .then(function(response) {
-       console.log('SUCCESS!', response.status, response.text);
-    }, function(error) {
-       console.log('FAILED...', error);
-    });
+      .then(function (response) {
+        console.log('SUCCESS!', response.status, response.text);
+      }, function (error) {
+        console.log('FAILED...', error);
+      });
+  }
+  sendMessage() {
+    const TWILIO_URL = 'https://api.twilio.com/2010-04-01/Accounts/AC5a78a45821f32805b243368526b6a795/Messages.json';
+    const messageBody = {
+      Body: "This is a test message",
+      From: "whatsapp:+14155238886",
+      To: "whatsapp:+918870023759"
+    };
+    axios
+      .post(TWILIO_URL, new URLSearchParams(messageBody), {
+        auth: {
+          username: 'AC5a78a45821f32805b243368526b6a795',
+          password: '7c864716eb57000b2c0b0f1464b89e64'
+        }
+      })
+      .then(
+        response => {
+          console.log(response.data.sid);
+        },
+        error => {
+          console.log('error in response', error);
+        }
+      );
   }
   errorHandler(resposeError: HttpErrorResponse) {
     return throwError(resposeError.error.errors);
