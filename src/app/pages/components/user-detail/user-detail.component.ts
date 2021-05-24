@@ -21,7 +21,6 @@ export class UserDetailComponent implements OnInit {
     private service: CommonService) { }
 
   ngOnInit(): void {  }
-
   userDetailForm = this.formBuilder.group({
     dateRange: [null,[Validators.required]],
   });
@@ -47,6 +46,7 @@ export class UserDetailComponent implements OnInit {
           currentPage: 1,
           totalItems: this.totalRec
         };
+        this.service.updateUserDetails(this.userData)
       },
       (error: HttpErrorResponse) => {
         this.toastr.error(error[0], 'Error', {

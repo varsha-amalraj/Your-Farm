@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 import { CommonService } from '../../CommonService';
 import { SendMessageResolverService } from './send-message-resolver.service';
@@ -21,13 +22,15 @@ export class SendMessageComponent implements OnInit {
   isTableShow: boolean = false;
   messageText: string;
   codeText: string;
+  userData: any;
+  subscription: Subscription;
   constructor(private formBuilder: FormBuilder,
     private storage: AngularFireStorage,
     private service: CommonService,
-    private activatedRoute: ActivatedRoute,
-    private resolverService:SendMessageResolverService) { }
+    private resolverService: SendMessageResolverService) { }
 
   ngOnInit(): void {
+    this.subscription = this.service.userDetails.subscribe(userData => this.userData = userData);
     this.frameMessageForm.disable();
   }
   frameMessageForm = this.formBuilder.group({
@@ -85,9 +88,11 @@ export class SendMessageComponent implements OnInit {
       message: messageText,
       image: this.getImageUrl
     }
-    this.service.sendMessage();
-    this.resolverService.resolve();
-    this.resolverService.resolveSendMessage();
+    this.service.addMessage(params);
+    this.resolverService.resolve(this.userData.length);
+    for (let i = 0; i < this.userData.length; i++) {
+      this.resolverService.resolveSendMessage(this.userData[i], i);
+    }
   }
 
   getMessageDetails() {
@@ -104,5 +109,6 @@ export class SendMessageComponent implements OnInit {
     this.frameMessageForm.controls.frameMessage.setValue(messageContent.split('Your ').pop().split(';')[0])
     this.frameMessageForm.controls.frameCode.setValue(messageContent.split('code is:')[1])
   }
+
 }
 

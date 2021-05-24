@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Subscription, throwError } from 'rxjs';
+import { BehaviorSubject, Subscription, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators'
 import { StoreState } from '../store/store';
 import { AngularFireDatabase } from '@angular/fire/database';
@@ -13,6 +13,8 @@ import axios from 'axios';
   providedIn: 'root',
 })
 export class CommonService implements OnDestroy {
+  private userDetailSource = new BehaviorSubject('default message');
+  userDetails = this.userDetailSource.asObservable();
   subscriptions = new Subscription();
   private url = 'https://yourfarm-api.herokuapp.com/';
   options: any;
@@ -31,7 +33,9 @@ export class CommonService implements OnDestroy {
     });
     this.subscriptions.add(observer);
   }
-
+  updateUserDetails(userData: any) {
+    this.userDetailSource.next(userData)
+  }
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }
@@ -55,12 +59,14 @@ export class CommonService implements OnDestroy {
   getMessageList() {
     return this.itemRef;
   }
-  sendEmailToClient() {
+  sendEmailToClient(dataLength) {
+    const messageCost = dataLength * 3;
     const params = {
-      name: 'varsha',
+      date: `Date: ${new Date()}`,
       email: 'minivarsha.a@netcon.in',
-      subject: 'sub test',
-      message: 'test',
+      subject: 'Your-Farm',
+      users_count: `No of users: ${dataLength}`,
+      message_cost: `Cost: $${messageCost}`
     }
     return emailjs.send('service_kutecu8', 'template_31nht7e', params, 'user_UCPJOmALiHMsIcUmlhP3n')
       .then(function (response) {
@@ -69,12 +75,13 @@ export class CommonService implements OnDestroy {
         console.log('FAILED...', error);
       });
   }
-  sendMessage() {
+  sendMessage(userData:any) {
     const TWILIO_URL = 'https://api.twilio.com/2010-04-01/Accounts/AC5a78a45821f32805b243368526b6a795/Messages.json';
     const messageBody = {
       Body: "This is a test message",
       From: "whatsapp:+14155238886",
-      To: "whatsapp:+918870023759"
+      // To: `whatsapp:${userData.mobile_no}`
+      To: 'whatsapp:+918870023759'
     };
     axios
       .post(TWILIO_URL, new URLSearchParams(messageBody), {

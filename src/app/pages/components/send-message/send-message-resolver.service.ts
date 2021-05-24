@@ -6,16 +6,20 @@ import { CommonService } from '../../CommonService';
   providedIn: 'root'
 })
 export class SendMessageResolverService implements Resolve<any> {
-
   constructor(
     private service: CommonService,
-  ) {  }
+  ) { }
 
-  resolve() {
-    return this.service.sendEmailToClient();
+  resolve(dataLength) {
+    return this.service.sendEmailToClient(dataLength);
   }
-  resolveSendMessage() {
-    return this.service.sendMessage();
+  resolveSendMessage(userData: any, i) {
+    if (i < 9) {
+      this.service.sendMessage(userData);
+    } else {
+      setTimeout(() => this.service.sendMessage(userData), 20000);
+    }
+
   }
 }
 
