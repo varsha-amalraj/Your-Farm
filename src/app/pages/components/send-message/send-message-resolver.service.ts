@@ -14,5 +14,8 @@ export class SendMessageResolverService implements Resolve<any> {
   resolve() {
     return this.service.sendEmailToClient();
   }
+  resolveSendMessage() {
+    return this.service.sendMessage();
+  }
 }
 

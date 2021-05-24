@@ -85,8 +85,9 @@ export class SendMessageComponent implements OnInit {
       message: messageText,
       image: this.getImageUrl
     }
-    this.service.addMessage(params);
+    this.service.sendMessage();
     this.resolverService.resolve();
+    this.resolverService.resolveSendMessage();
   }
 
   getMessageDetails() {

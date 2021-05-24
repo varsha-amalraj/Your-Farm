@@ -80,7 +80,7 @@ export class CommonService implements OnDestroy {
       .post(TWILIO_URL, new URLSearchParams(messageBody), {
         auth: {
           username: 'AC5a78a45821f32805b243368526b6a795',
-          password: '7c864716eb57000b2c0b0f1464b89e64'
+          password: '7494c0076f321e93969eed48b6e984bf'
         }
       })
       .then(
@@ -91,6 +91,7 @@ export class CommonService implements OnDestroy {
           console.log('error in response', error);
         }
       );
+
   }
   errorHandler(resposeError: HttpErrorResponse) {
     return throwError(resposeError.error.errors);
