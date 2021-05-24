@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { CommonService } from '../../CommonService';
+import { INTERVAL, TOASTR_DURATION } from '../../constants';
 import { SendMessageResolverService } from './send-message-resolver.service';
+
 
 @Component({
   selector: 'app-send-message',
@@ -24,14 +26,39 @@ export class SendMessageComponent implements OnInit {
   codeText: string;
   userData: any;
   subscription: Subscription;
+  twilioBalance: number;
   constructor(private formBuilder: FormBuilder,
     private storage: AngularFireStorage,
     private service: CommonService,
-    private resolverService: SendMessageResolverService) { }
+    private resolverService: SendMessageResolverService,
+    private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.subscription = this.service.userDetails.subscribe(userData => this.userData = userData);
+    setInterval(() => this.getTwilioBalance(), INTERVAL);
     this.frameMessageForm.disable();
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+  getTwilioBalance() {
+    this.service.checkTwilioBalance().then(
+      response => {
+        this.twilioBalance = response.data.balance;
+        if (this.twilioBalance < 3) {
+          this.toastr.error('Your balance is very low.Please recharge your plan!', 'Error', {
+            timeOut: TOASTR_DURATION,
+          });
+        }
+        this.frameMessageForm.disable();
+        this.messageDisabled = false;
+      },
+      error => {
+        this.toastr.error(error, 'Error', {
+          timeOut: TOASTR_DURATION,
+        });
+      }
+    );
   }
   frameMessageForm = this.formBuilder.group({
     frameMessage: [null, [Validators.required]],

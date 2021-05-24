@@ -8,6 +8,7 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { TOKEN } from './constants';
 import emailjs, { EmailJSResponseStatus } from 'emailjs-com';
 import axios from 'axios';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +17,7 @@ export class CommonService implements OnDestroy {
   private userDetailSource = new BehaviorSubject('default message');
   userDetails = this.userDetailSource.asObservable();
   subscriptions = new Subscription();
-  private url = 'https://yourfarm-api.herokuapp.com/';
+  private
   options: any;
   itemRef: any;
   constructor(private http: HttpClient, private store: Store<StoreState>,
@@ -43,7 +44,7 @@ export class CommonService implements OnDestroy {
     this.options = {
       observe: 'response',
     };
-    return this.http.post(`${this.url}v1/login`, formData, this.options)
+    return this.http.post(`${environment.apiURL}v1/login`, formData, this.options)
       .pipe(catchError(this.errorHandler));
   }
   getUserDetails(formData) {
@@ -51,7 +52,7 @@ export class CommonService implements OnDestroy {
       formData,
       ...this.options
     }
-    return this.http.get(`${this.url}v1/users`, params);
+    return this.http.get(`${environment.apiURL}v1/users`, params);
   }
   addMessage(messageData) {
     return this.itemRef.push(messageData);
@@ -75,8 +76,7 @@ export class CommonService implements OnDestroy {
         console.log('FAILED...', error);
       });
   }
-  sendMessage(userData:any) {
-    const TWILIO_URL = 'https://api.twilio.com/2010-04-01/Accounts/AC5a78a45821f32805b243368526b6a795/Messages.json';
+  sendMessage(userData: any) {
     const messageBody = {
       Body: "This is a test message",
       From: "whatsapp:+14155238886",
@@ -84,10 +84,10 @@ export class CommonService implements OnDestroy {
       To: 'whatsapp:+918870023759'
     };
     axios
-      .post(TWILIO_URL, new URLSearchParams(messageBody), {
+      .post(`${environment.twilioURL}/Messages.json`, new URLSearchParams(messageBody), {
         auth: {
           username: 'AC5a78a45821f32805b243368526b6a795',
-          password: '7494c0076f321e93969eed48b6e984bf'
+          password: '2c0f75d18d1cd65b9b81aab334339785'
         }
       })
       .then(
@@ -99,6 +99,14 @@ export class CommonService implements OnDestroy {
         }
       );
 
+  }
+  checkTwilioBalance() {
+    return axios.get(`${environment.twilioURL}/Balance.json`, {
+      auth: {
+        username: 'AC5a78a45821f32805b243368526b6a795',
+        password: '2c0f75d18d1cd65b9b81aab334339785'
+      }
+    });
   }
   errorHandler(resposeError: HttpErrorResponse) {
     return throwError(resposeError.error.errors);
