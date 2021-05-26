@@ -44,8 +44,3 @@ import {AngularFireDatabaseModule} from "@angular/fire/database";
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-
-
-
-
-    AngularFireDatabaseModule
