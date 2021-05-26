@@ -17,7 +17,6 @@ export class CommonService implements OnDestroy {
   private userDetailSource = new BehaviorSubject('default message');
   userDetails = this.userDetailSource.asObservable();
   subscriptions = new Subscription();
-  private
   options: any;
   itemRef: any;
   constructor(private http: HttpClient, private store: Store<StoreState>,
