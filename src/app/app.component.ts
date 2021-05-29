@@ -5,5 +5,5 @@ import { Component } from '@angular/core';
   template: '<router-outlet></router-outlet>',
 })
 export class AppComponent {
-  title = 'your-Farm';
+  title = 'angular-unit-testing';
 }

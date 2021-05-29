@@ -7,7 +7,7 @@
       <div class="form-group row w-50">
         <label class="col-3 col-form-label">Select Date Range:</label>
         <div class="col-5">
-          <input type="text" ngxDaterangepickerMd class="form-control" formControlName="dateRange" />
+          <input type="text" ngxDaterangepickerMd id="dateRange" class="form-control" formControlName="dateRange" placeholder="Select Date Range"/>
           <p class="text-left text-danger" *ngIf="userDetailFormControl.dateRange.touched || userDetailFormControl.dateRange.dirty">Date range is required.</p>
         </div>
         <div class="col-4">
@@ -15,7 +15,7 @@
         </div>
       </div>
     </form>
-    <table class="table table-bordered">
+    <!-- <table class="table table-bordered">
       <thead>
         <tr>
           <th scope="col">Id</th>
@@ -25,7 +25,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of userData | paginate: { id: 'listing_pagination',
+        <tr *ngFor="let item of userData | paginate : {
         itemsPerPage: 10,
         currentPage: page,
         totalItems: totalRec }">
@@ -36,8 +36,8 @@
         </tr>
       </tbody>
     </table>
-    <pagination-controls id="listing_pagination" class="pagination" autoHide=true (pageChange)="pageChanged($event)">
-    </pagination-controls>
+    <pagination-controls class="pagination" autoHide=true (pageChange)="pageChanged($event)">
+    </pagination-controls> -->
     <div class="float-right next">
       <a routerLink="../send-message">Next</a>
     </div>

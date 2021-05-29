@@ -1,20 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { CommonService } from '../../CommonService';
 import { INTERVAL, TOASTR_DURATION } from '../../constants';
-import { SendMessageResolverService } from './send-message-resolver.service';
-
+import { CommonService } from '../../service/common.service';
+import { HelperService } from '../../testing/helpers/helper.service';
+import { SendMessageResolverService } from './resolver/send-message-resolver.service';
 
 @Component({
   selector: 'app-send-message',
   templateUrl: './send-message.component.html',
   styleUrls: ['./send-message.component.css']
 })
-export class SendMessageComponent implements OnInit {
+export class SendMessageComponent implements OnInit,OnDestroy {
   imgSrc: string = '/assets/images/image_placeholder.png';
   isSubmitted: boolean = false;
   getImageUrl: string;
@@ -27,11 +28,17 @@ export class SendMessageComponent implements OnInit {
   userData: any;
   subscription: Subscription;
   twilioBalance: number;
-  constructor(private formBuilder: FormBuilder,
-    private storage: AngularFireStorage,
-    private service: CommonService,
+  itemRef: any;
+  constructor(
+    private formBuilder: FormBuilder,
+    private service: HelperService,
+    public db: AngularFireDatabase,
+    private toastr: ToastrService,
     private resolverService: SendMessageResolverService,
-    private toastr: ToastrService) { }
+    private storage: AngularFireStorage
+  ) {
+    this.itemRef = this.db.list('message_detail');
+  }
 
   ngOnInit(): void {
     this.subscription = this.service.userDetails.subscribe(userData => this.userData = userData);
@@ -60,12 +67,26 @@ export class SendMessageComponent implements OnInit {
       }
     );
   }
+  getMessageDetails() {
+    this.isTableShow = true;
+    this.itemRef.snapshotChanges().forEach(element => {
+      element.forEach(element => {
+        let message_det = element.payload.toJSON();
+        this.messageDetails.push(message_det);
+      });
+    });
+  }
   frameMessageForm = this.formBuilder.group({
     frameMessage: [null, [Validators.required]],
     frameCode: [null, [Validators.required]]
   });
   get frameMessageControl() {
     return this.frameMessageForm.controls;
+  }
+  useDetails(val) {
+    const messageContent = this.messageDetails[val].message;
+    this.frameMessageForm.controls.frameMessage.setValue(messageContent.split('Your ').pop().split(';')[0])
+    this.frameMessageForm.controls.frameCode.setValue(messageContent.split('code is:')[1])
   }
   uploadImageForm = this.formBuilder.group({
     imageUrl: [null, [Validators.required]],
@@ -115,27 +136,10 @@ export class SendMessageComponent implements OnInit {
       message: messageText,
       image: this.getImageUrl
     }
-    this.service.addMessage(params);
+    this.itemRef.push(params)
     this.resolverService.resolve(this.userData.length);
     for (let i = 0; i < this.userData.length; i++) {
       this.resolverService.resolveSendMessage(this.userData[i], i);
     }
   }
-
-  getMessageDetails() {
-    this.isTableShow = true;
-    this.service.getMessageList().snapshotChanges().forEach(element => {
-      element.forEach(element => {
-        let message_det = element.payload.toJSON();
-        this.messageDetails.push(message_det);
-      });
-    });
-  }
-  useDetails(val) {
-    const messageContent = this.messageDetails[val].message;
-    this.frameMessageForm.controls.frameMessage.setValue(messageContent.split('Your ').pop().split(';')[0])
-    this.frameMessageForm.controls.frameCode.setValue(messageContent.split('code is:')[1])
-  }
-
 }
-

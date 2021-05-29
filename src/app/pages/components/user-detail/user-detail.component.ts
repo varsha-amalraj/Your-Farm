@@ -3,8 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
-import { CommonService } from '../../CommonService';
+import { Subscription } from 'rxjs';
 import { TOASTR_DURATION } from '../../constants';
+import { CommonService } from '../../service/common.service';
+import { HelperService } from '../../testing/helpers/helper.service';
 
 @Component({
   selector: 'app-user-detail',
@@ -14,21 +16,25 @@ import { TOASTR_DURATION } from '../../constants';
 export class UserDetailComponent implements OnInit {
   userData: any;
   page = 1;
-  totalRec;
+  totalRec = 20;
   config;
+  pagination = {
+    itemsPerPage: 10,
+    currentPage: this.page,
+    totalItems: this.totalRec
+  }
+  subscriptions = new Subscription();
   constructor(private formBuilder: FormBuilder,
-    private toastr: ToastrService,
-    private service: CommonService) { }
+    public toastr: ToastrService,
+    private service: CommonService,
+    private helperService: HelperService) { }
 
-  ngOnInit(): void {  }
+  ngOnInit(): void { }
   userDetailForm = this.formBuilder.group({
-    dateRange: [null,[Validators.required]],
+    dateRange: [null, [Validators.required]],
   });
   get userDetailFormControl() {
     return this.userDetailForm.controls;
-  }
-  onPageChange(event) {
-
   }
   onSubmit() {
     const params = {
@@ -37,8 +43,6 @@ export class UserDetailComponent implements OnInit {
     };
     const observer = this.service.getUserDetails(params).subscribe(
       (response: any) => {
-        console.log(response);
-
         this.userData = response.body.users;
         this.totalRec = this.userData.length;
         this.config = {
@@ -46,7 +50,12 @@ export class UserDetailComponent implements OnInit {
           currentPage: 1,
           totalItems: this.totalRec
         };
-        this.service.updateUserDetails(this.userData)
+        this.pagination = {
+          itemsPerPage: 10,
+          currentPage: this.page,
+          totalItems: this.totalRec
+        }
+        this.helperService.updateUserDetails(this.userData);
       },
       (error: HttpErrorResponse) => {
         this.toastr.error(error[0], 'Error', {
@@ -54,9 +63,9 @@ export class UserDetailComponent implements OnInit {
         });
       },
     );
-    // this.subscriptions.add(observer);
+    this.subscriptions.add(observer);
   }
-  pageChanged(event){
-    this.page = event;
-  }
+  // pageChanged(event) {
+  //   this.page = event;
+  // }
 }

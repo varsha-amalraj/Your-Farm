@@ -1,12 +1,16 @@
 import { TestBed } from '@angular/core/testing';
+import { HelperService } from 'src/app/pages/testing/helpers/helper.service';
 
 import { SendMessageResolverService } from './send-message-resolver.service';
 
 describe('SendMessageResolverService', () => {
   let service: SendMessageResolverService;
-
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [
+        HelperService
+      ]
+    });
     service = TestBed.inject(SendMessageResolverService);
   });
 

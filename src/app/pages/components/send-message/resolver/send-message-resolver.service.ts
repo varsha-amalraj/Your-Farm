@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
-import { CommonService } from '../../CommonService';
+import { HelperService } from 'src/app/pages/testing/helpers/helper.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SendMessageResolverService implements Resolve<any> {
-  constructor(
-    private service: CommonService,
-  ) { }
+export class SendMessageResolverService {
 
+  constructor(private service: HelperService) { }
   resolve(dataLength) {
     return this.service.sendEmailToClient(dataLength);
   }
@@ -22,4 +19,3 @@ export class SendMessageResolverService implements Resolve<any> {
 
   }
 }
-

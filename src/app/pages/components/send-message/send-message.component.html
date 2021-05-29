@@ -26,8 +26,8 @@
           <div class="row">
             <label class="col-4 col-form-label">Frame Message</label>
             <div class="form-group col-8">
-              <input type="text" class="form-control" placeholder="Enter Message" formControlName="frameMessage" [(ngModel)]="messageText"><br>
-              <input type="text" class="form-control" placeholder="Enter Code" formControlName="frameCode" [(ngModel)]="codeText">            </div>
+              <input type="text" class="form-control" placeholder="Enter Message" id="frameMessageId" formControlName="frameMessage" [(ngModel)]="messageText"><br>
+              <input type="text" class="form-control" placeholder="Enter Code" id="frameCodeId" formControlName="frameCode" [(ngModel)]="codeText">            </div>
           </div>
           <div class="row" *ngIf="messageDisabled">
             <div class="col-4 form-label">
@@ -52,7 +52,7 @@
           <div class="row">
             <label class="col-3 col-form-label">Select file to upload</label>
             <div class="form-group col-6">
-              <input type="file" class="form-control" (change)="showPreview($event)" formControlName="imageUrl"
+              <input type="file" class="form-control" id="imageId" (change)="showPreview($event)" formControlName="imageUrl"
                 #fileUplaoder>
             </div>
             <div class="form-group col-3">
@@ -64,3 +64,4 @@
     </div>
   </div>
 </div>
+
