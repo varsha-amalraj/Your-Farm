@@ -43,7 +43,7 @@ export class HelperService {
       .post(`${environment.twilioURL}/Messages.json`, new URLSearchParams(messageBody), {
         auth: {
           username: 'AC5a78a45821f32805b243368526b6a795',
-          password: '45e6802c8994745fe84365c8cb5f0d16'
+          password: '66b11e407589b5b054a53ff8c4d377ef'
         }
       })
       .then(
@@ -60,7 +60,7 @@ export class HelperService {
     return axios.get(`${environment.twilioURL}/Balance.json`, {
       auth: {
         username: 'AC5a78a45821f32805b243368526b6a795',
-        password: '45e6802c8994745fe84365c8cb5f0d16'
+        password: '66b11e407589b5b054a53ff8c4d377ef'
       }
     });
   }

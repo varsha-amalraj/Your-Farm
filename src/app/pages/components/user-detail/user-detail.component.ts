@@ -17,17 +17,12 @@ export class UserDetailComponent implements OnInit {
   userData: any;
   page = 1;
   totalRec = 20;
-  config;
-  pagination = {
-    itemsPerPage: 10,
-    currentPage: this.page,
-    totalItems: this.totalRec
-  }
   subscriptions = new Subscription();
   constructor(private formBuilder: FormBuilder,
     public toastr: ToastrService,
     private service: CommonService,
-    private helperService: HelperService) { }
+    private helperService: HelperService) {
+  }
 
   ngOnInit(): void { }
   userDetailForm = this.formBuilder.group({
@@ -45,16 +40,6 @@ export class UserDetailComponent implements OnInit {
       (response: any) => {
         this.userData = response.body.users;
         this.totalRec = this.userData.length;
-        this.config = {
-          itemsPerPage: 5,
-          currentPage: 1,
-          totalItems: this.totalRec
-        };
-        this.pagination = {
-          itemsPerPage: 10,
-          currentPage: this.page,
-          totalItems: this.totalRec
-        }
         this.helperService.updateUserDetails(this.userData);
       },
       (error: HttpErrorResponse) => {
@@ -65,7 +50,7 @@ export class UserDetailComponent implements OnInit {
     );
     this.subscriptions.add(observer);
   }
-  // pageChanged(event) {
-  //   this.page = event;
-  // }
+  pageChanged(event) {
+    this.page = event;
+  }
 }

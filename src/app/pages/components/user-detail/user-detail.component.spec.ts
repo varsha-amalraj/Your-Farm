@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { PaginatePipe } from 'ngx-pagination';
+import { NgxPaginationModule, PaginatePipe } from 'ngx-pagination';
 import { ToastrModule } from 'ngx-toastr';
 import { of, throwError } from 'rxjs';
 import { UserData } from '../../model';
@@ -28,11 +28,13 @@ describe('UserDetailComponent', () => {
         FormsModule,
         RouterTestingModule,
         ToastrModule.forRoot(),
+        NgxPaginationModule
       ],
       providers: [{ provide: CommonService, useValue: commonServiceMock },
-      HelperService],
+        HelperService],
     })
       .compileComponents();
+
   });
 
   beforeEach(() => {
