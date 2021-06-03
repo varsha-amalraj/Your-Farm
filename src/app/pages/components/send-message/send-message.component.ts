@@ -153,8 +153,9 @@ export class SendMessageComponent implements OnInit, OnDestroy {
       })
 
     })
-    for (let i = 0; i < this.userData.length; i++) {
-      this.resolverService.resolveSendMessage(this.userData[i], i, params);
-    }
+    this.resolverService.resolveSendMessage(this.userData, params);
+    // for (let i = 0; i < this.userData.length; i++) {
+    //   this.resolverService.resolveSendMessage(this.userData[i], i, params);
+    // }
   }
 }

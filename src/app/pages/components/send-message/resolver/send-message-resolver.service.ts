@@ -10,12 +10,13 @@ export class SendMessageResolverService {
   resolve(dataLength) {
     return this.service.sendEmailToClient(dataLength);
   }
-  resolveSendMessage(userData: any, i, messageParams) {
-    if (i < 9) {
-      this.service.sendMessage(userData, messageParams);
-    } else {
-      setTimeout(() => this.service.sendMessage(userData, messageParams), 20000);
-    }
+  resolveSendMessage(userData: any, messageParams) {
+    this.service.sendMessage(userData, messageParams);
+    // if (i < 9) {
+    //   this.service.sendMessage(userData, messageParams);
+    // } else {
+    //   setTimeout(() => this.service.sendMessage(userData, messageParams), 20000);
+    // }
 
   }
 }
