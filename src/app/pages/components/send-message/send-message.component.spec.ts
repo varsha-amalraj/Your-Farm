@@ -109,33 +109,4 @@ describe('SendMessageComponent', () => {
     });
   });
 
-
-
-  // describe('#onSubmit()', () => {
-  //   beforeEach(() => {
-  //     component.loginForm.patchValue({
-  //       mobile_no: '9876543210',
-  //       password: '12345678',
-  //     });
-  //   });
-  //   it('calls common service', () => {
-  //     setTimeout(function () {
-  //       const service = TestBed.inject(CommonService);
-
-  //       const router = TestBed.inject(Router);
-  //       component.onSubmit();
-
-  //       expect(service.login).toHaveBeenCalled();
-  //     }, 3000);
-  //   });
-
-  //   it('shows error message when #onSubmit() is errored out', () => {
-  //     authServiceMock.login.and.returnValue(throwError('Error'));
-  //     spyOn(component.toastr, 'error').and.callThrough();
-  //     component.onSubmit();
-
-  //     expect(component.toastr.error).toHaveBeenCalled();
-  //   });
-  // });
-
 });

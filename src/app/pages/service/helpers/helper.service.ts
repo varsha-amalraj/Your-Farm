@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import emailjs from 'emailjs-com';
+import emailjs, { EmailJSResponseStatus } from 'emailjs-com';
 import { BehaviorSubject } from 'rxjs';
 import axios from 'axios';
 import { environment } from 'src/environments/environment';
@@ -25,16 +25,19 @@ export class HelperService {
       message_cost: `Cost: $${messageCost}`
     }
     return emailjs.send('service_kutecu8', 'template_31nht7e', params, 'user_UCPJOmALiHMsIcUmlhP3n')
-      .then(function (response) {
-        console.log('SUCCESS!', response.status, response.text);
-      }, function (error) {
-        console.log('FAILED...', error);
+      .then((response: EmailJSResponseStatus) => {
+        alert("Mail has been sent successfully!");
+
+      }, (error) => {
+        alert(error)
+
       });
   }
 
   sendMessage(userData: any, messageParams) {
     const messageBody = {
-      Body: `${messageParams.message} and this is image link ${messageParams.image}`,
+      Body: `Message: ${messageParams.message}
+Image Link:  ${messageParams.image}`,
       From: "whatsapp:+14155238886",
       // To: `whatsapp:${userData.mobile_no}`
       To: 'whatsapp:+918870023759'
@@ -43,7 +46,7 @@ export class HelperService {
       .post(`${environment.twilioURL}/Messages.json`, new URLSearchParams(messageBody), {
         auth: {
           username: 'AC5a78a45821f32805b243368526b6a795',
-          password: '50a88e5476df9741f3078ab69d9222ca'
+          password: '8c23d030df5eb968bedcb5621de1256f'
         }
       })
       .then(
@@ -60,7 +63,7 @@ export class HelperService {
     return axios.get(`${environment.twilioURL}/Balance.json`, {
       auth: {
         username: 'AC5a78a45821f32805b243368526b6a795',
-        password: '50a88e5476df9741f3078ab69d9222ca'
+        password: '8c23d030df5eb968bedcb5621de1256f'
       }
     });
   }

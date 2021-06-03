@@ -139,7 +139,14 @@ export class SendMessageComponent implements OnInit, OnDestroy {
       message: messageText,
       image: this.getImageUrl
     }
-    this.itemRef.push(params)
+    this.itemRef.push(params).then(() => {
+      this.toastr.success('Your message has been saved successfully.You can reuse the same message in future!', 'Success', {
+        timeOut: TOASTR_DURATION,
+      });
+      this.frameMessageForm.reset();
+      this.frameMessageForm.disable();
+      this.messageDisabled = false;
+    })
     this.resolverService.resolve(this.userData.length);
     for (let i = 0; i < this.userData.length; i++) {
       this.resolverService.resolveSendMessage(this.userData[i], i, params);
