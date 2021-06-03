@@ -88,8 +88,6 @@ export class SendMessageComponent implements OnInit, OnDestroy {
     const messageContent = this.messageDetails[val].message;
     this.frameMessageForm.controls.frameMessage.setValue(messageContent.split('Your ').pop().split(';')[0])
     this.frameMessageForm.controls.frameCode.setValue(messageContent.split('code is:')[1])
-    this.frameMessageForm.enable();
-    this.messageDisabled = true;
   }
   uploadImageForm = this.formBuilder.group({
     imageUrl: [null, [Validators.required]],
@@ -153,9 +151,8 @@ export class SendMessageComponent implements OnInit, OnDestroy {
       })
 
     })
-    this.resolverService.resolveSendMessage(this.userData, params);
-    // for (let i = 0; i < this.userData.length; i++) {
-    //   this.resolverService.resolveSendMessage(this.userData[i], i, params);
-    // }
+    for (let i = 0; i < this.userData.length; i++) {
+      this.resolverService.resolveSendMessage(this.userData[i], i, params);
+    }
   }
 }
