@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { HelperService } from 'src/app/pages/testing/helpers/helper.service';
+import { HelperService } from 'src/app/pages/service/helpers/helper.service';
 
 import { SendMessageResolverService } from './send-message-resolver.service';
 

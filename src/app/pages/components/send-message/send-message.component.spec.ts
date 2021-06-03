@@ -8,7 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ToastrModule } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
-import { HelperService } from '../../testing/helpers/helper.service';
+import { HelperService } from '../../service/helpers/helper.service';
 import { SendMessageResolverService } from './resolver/send-message-resolver.service';
 
 import { SendMessageComponent } from './send-message.component';

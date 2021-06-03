@@ -6,8 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { INTERVAL, TOASTR_DURATION } from '../../constants';
-import { CommonService } from '../../service/common.service';
-import { HelperService } from '../../testing/helpers/helper.service';
+import { HelperService } from '../../service/helpers/helper.service';
 import { SendMessageResolverService } from './resolver/send-message-resolver.service';
 
 @Component({
@@ -15,7 +14,7 @@ import { SendMessageResolverService } from './resolver/send-message-resolver.ser
   templateUrl: './send-message.component.html',
   styleUrls: ['./send-message.component.css']
 })
-export class SendMessageComponent implements OnInit,OnDestroy {
+export class SendMessageComponent implements OnInit, OnDestroy {
   imgSrc: string = '/assets/images/image_placeholder.png';
   isSubmitted: boolean = false;
   getImageUrl: string;
@@ -42,6 +41,8 @@ export class SendMessageComponent implements OnInit,OnDestroy {
 
   ngOnInit(): void {
     this.subscription = this.service.userDetails.subscribe(userData => this.userData = userData);
+    console.log(this.userData);
+
     setInterval(() => this.getTwilioBalance(), INTERVAL);
     this.frameMessageForm.disable();
   }
@@ -56,9 +57,9 @@ export class SendMessageComponent implements OnInit,OnDestroy {
           this.toastr.error('Your balance is very low.Please recharge your plan!', 'Error', {
             timeOut: TOASTR_DURATION,
           });
+          this.frameMessageForm.disable();
+          this.messageDisabled = false;
         }
-        this.frameMessageForm.disable();
-        this.messageDisabled = false;
       },
       error => {
         this.toastr.error(error, 'Error', {
@@ -87,6 +88,8 @@ export class SendMessageComponent implements OnInit,OnDestroy {
     const messageContent = this.messageDetails[val].message;
     this.frameMessageForm.controls.frameMessage.setValue(messageContent.split('Your ').pop().split(';')[0])
     this.frameMessageForm.controls.frameCode.setValue(messageContent.split('code is:')[1])
+    this.frameMessageForm.enable();
+    this.messageDisabled = true;
   }
   uploadImageForm = this.formBuilder.group({
     imageUrl: [null, [Validators.required]],
@@ -139,7 +142,7 @@ export class SendMessageComponent implements OnInit,OnDestroy {
     this.itemRef.push(params)
     this.resolverService.resolve(this.userData.length);
     for (let i = 0; i < this.userData.length; i++) {
-      this.resolverService.resolveSendMessage(this.userData[i], i);
+      this.resolverService.resolveSendMessage(this.userData[i], i, params);
     }
   }
 }

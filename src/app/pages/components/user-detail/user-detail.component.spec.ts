@@ -7,7 +7,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { of, throwError } from 'rxjs';
 import { UserData } from '../../model';
 import { CommonService } from '../../service/common.service';
-import { HelperService } from '../../testing/helpers/helper.service';
+import { HelperService } from '../../service/helpers/helper.service';
 
 import { UserDetailComponent } from './user-detail.component';
 

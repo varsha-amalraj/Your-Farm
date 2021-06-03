@@ -32,9 +32,9 @@ export class HelperService {
       });
   }
 
-  sendMessage(userData: any) {
+  sendMessage(userData: any, messageParams) {
     const messageBody = {
-      Body: "This is a test message",
+      Body: `${messageParams.message} and this is image link ${messageParams.image}`,
       From: "whatsapp:+14155238886",
       // To: `whatsapp:${userData.mobile_no}`
       To: 'whatsapp:+918870023759'
@@ -43,7 +43,7 @@ export class HelperService {
       .post(`${environment.twilioURL}/Messages.json`, new URLSearchParams(messageBody), {
         auth: {
           username: 'AC5a78a45821f32805b243368526b6a795',
-          password: '66b11e407589b5b054a53ff8c4d377ef'
+          password: '50a88e5476df9741f3078ab69d9222ca'
         }
       })
       .then(
@@ -60,7 +60,7 @@ export class HelperService {
     return axios.get(`${environment.twilioURL}/Balance.json`, {
       auth: {
         username: 'AC5a78a45821f32805b243368526b6a795',
-        password: '66b11e407589b5b054a53ff8c4d377ef'
+        password: '50a88e5476df9741f3078ab69d9222ca'
       }
     });
   }

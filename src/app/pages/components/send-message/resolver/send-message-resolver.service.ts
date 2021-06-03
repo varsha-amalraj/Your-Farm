@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HelperService } from 'src/app/pages/testing/helpers/helper.service';
+import { HelperService } from 'src/app/pages/service/helpers/helper.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,11 +10,11 @@ export class SendMessageResolverService {
   resolve(dataLength) {
     return this.service.sendEmailToClient(dataLength);
   }
-  resolveSendMessage(userData: any, i) {
+  resolveSendMessage(userData: any, i, messageParams) {
     if (i < 9) {
-      this.service.sendMessage(userData);
+      this.service.sendMessage(userData, messageParams);
     } else {
-      setTimeout(() => this.service.sendMessage(userData), 20000);
+      setTimeout(() => this.service.sendMessage(userData, messageParams), 20000);
     }
 
   }

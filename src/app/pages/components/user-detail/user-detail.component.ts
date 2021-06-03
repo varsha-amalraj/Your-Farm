@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { TOASTR_DURATION } from '../../constants';
 import { CommonService } from '../../service/common.service';
-import { HelperService } from '../../testing/helpers/helper.service';
+import { HelperService } from '../../service/helpers/helper.service';
 
 @Component({
   selector: 'app-user-detail',

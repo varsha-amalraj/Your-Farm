@@ -37,8 +37,16 @@ export const requestUserDataMock = {
   created_till: ''
 }
 export const sendMessageParams = {
-  Body: "This is a test message",
-  From: "whatsapp:+14155238886",
-  // To: `whatsapp:${userData.mobile_no}`
-  To: 'whatsapp:+918870023759'
+  message: '',
+  image: ''
+}
+export const userData = {
+  id: 1,
+  mobile_no: '',
+  pincode: '',
+  pincode_status: '',
+  last_conversation_id: '',
+  treatment_subscription_id: '',
+  dt_eng_subscription_id: '',
+  created_at: ''
 }

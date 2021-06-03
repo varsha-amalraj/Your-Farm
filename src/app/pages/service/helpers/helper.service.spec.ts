@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import axios from 'axios';
 import { environment } from 'src/environments/environment';
-import { sendMessageParams } from '../mockdata/common.service.mock';
+import { sendMessageParams, userData } from '../../testing/mockdata/common.service.mock';
 
 import { HelperService } from './helper.service';
 
@@ -18,7 +18,7 @@ describe('HelperService', () => {
   });
   describe('#sendMessage', () => {
     it('send message', () => {
-      service.sendMessage(sendMessageParams);
+      service.sendMessage(userData, sendMessageParams);
 
       axios.post(`${environment.twilioURL}/Messages.json`);
     });
