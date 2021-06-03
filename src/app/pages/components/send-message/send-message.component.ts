@@ -5,7 +5,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { INTERVAL, TOASTR_DURATION } from '../../constants';
+import { INTERVAL, TOASTR_DURATION, MIN_TOASTR_DURATION } from '../../constants';
 import { HelperService } from '../../service/helpers/helper.service';
 import { SendMessageResolverService } from './resolver/send-message-resolver.service';
 
@@ -141,13 +141,18 @@ export class SendMessageComponent implements OnInit, OnDestroy {
     }
     this.itemRef.push(params).then(() => {
       this.toastr.success('Your message has been saved successfully.You can reuse the same message in future!', 'Success', {
-        timeOut: TOASTR_DURATION,
+        timeOut: MIN_TOASTR_DURATION,
       });
       this.frameMessageForm.reset();
       this.frameMessageForm.disable();
       this.messageDisabled = false;
     })
-    this.resolverService.resolve(this.userData.length);
+    this.resolverService.resolve(this.userData.length).then((res) => {
+      this.toastr.success('Mail has been sent successfully', 'Success', {
+        timeOut: MIN_TOASTR_DURATION
+      })
+
+    })
     for (let i = 0; i < this.userData.length; i++) {
       this.resolverService.resolveSendMessage(this.userData[i], i, params);
     }

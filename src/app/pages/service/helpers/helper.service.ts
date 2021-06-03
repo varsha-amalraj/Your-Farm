@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import emailjs, { EmailJSResponseStatus } from 'emailjs-com';
+import emailjs from 'emailjs-com';
 import { BehaviorSubject } from 'rxjs';
 import axios from 'axios';
 import { environment } from 'src/environments/environment';
@@ -24,14 +24,7 @@ export class HelperService {
       users_count: `No of users: ${dataLength}`,
       message_cost: `Cost: $${messageCost}`
     }
-    return emailjs.send('service_kutecu8', 'template_31nht7e', params, 'user_UCPJOmALiHMsIcUmlhP3n')
-      .then((response: EmailJSResponseStatus) => {
-        alert("Mail has been sent successfully!");
-
-      }, (error) => {
-        alert(error)
-
-      });
+    return emailjs.send('service_kutecu8', 'template_31nht7e', params, 'user_UCPJOmALiHMsIcUmlhP3n');
   }
 
   sendMessage(userData: any, messageParams) {
