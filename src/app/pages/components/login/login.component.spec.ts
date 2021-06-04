@@ -4,9 +4,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { ToastrModule } from 'ngx-toastr';
 import { of, throwError } from 'rxjs';
-import { AuthUserData } from '../../model';
 import { CommonService } from '../../service/common.service';
 import { LoginComponent } from './login.component';
 

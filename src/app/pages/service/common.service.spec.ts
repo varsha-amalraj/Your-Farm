@@ -6,8 +6,6 @@ import { environment } from 'src/environments/environment';
 import { authState, logInRequestMock, logInResponseMock, requestUserDataMock, responseUserDataMock } from '../testing/mockdata/common.service.mock';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { StoreState } from 'src/app/store/store';
-import { AngularFireDatabaseModule } from '@angular/fire/database';
-import { AngularFireModule } from '@angular/fire';
 import { timer } from 'rxjs';
 
 describe('CommonService', () => {
