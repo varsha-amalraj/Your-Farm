@@ -145,14 +145,14 @@ export class SendMessageComponent implements OnInit, OnDestroy {
       this.frameMessageForm.disable();
       this.messageDisabled = false;
     })
+    for (let i = 0; i < this.userData.length; i++) {
+      this.resolverService.resolveSendMessage(this.userData[i], i, params);
+    }
     this.resolverService.resolve(this.userData.length).then((res) => {
       this.toastr.success('Mail has been sent successfully', 'Success', {
         timeOut: MIN_TOASTR_DURATION
       })
 
     })
-    for (let i = 0; i < this.userData.length; i++) {
-      this.resolverService.resolveSendMessage(this.userData[i], i, params);
-    }
   }
 }

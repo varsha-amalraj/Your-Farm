@@ -12,3 +12,6 @@
 .pagination {
   display: block !important;
 }
+::ng-deep .md-drppicker {
+  width: 175% !important;
+}
